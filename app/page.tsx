@@ -1,9 +1,166 @@
-import React from 'react'
+'use client'
+
+import React, { useState } from 'react'
 import Link from 'next/link'
 import { ArrowRight, Heart, Shield, TrendingUp, Users, Zap, Globe } from 'lucide-react'
 import { ConnectButton } from '@rainbow-me/rainbowkit'
+import { VaultDashboard } from '@/components/vault/VaultDashboard'
+import { VaultCreator } from '@/components/vault/VaultCreator'
+import { StudentDashboard } from '@/components/student/StudentDashboard'
 
 export default function HomePage() {
+  const [currentView, setCurrentView] = useState<'home' | 'vaults' | 'create' | 'student'>('home')
+
+  if (currentView === 'vaults') {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        {/* Navigation */}
+        <nav className="bg-white shadow-sm">
+          <div className="container mx-auto px-6 py-4">
+            <div className="flex items-center justify-between">
+              <button 
+                onClick={() => setCurrentView('home')}
+                className="flex items-center space-x-2 hover:opacity-80 transition-opacity"
+              >
+                <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+                  <Heart className="w-5 h-5 text-white" />
+                </div>
+                <span className="text-2xl font-bold text-gray-900">MediMint</span>
+              </button>
+              
+              <div className="hidden md:flex items-center space-x-8">
+                <button 
+                  onClick={() => setCurrentView('vaults')} 
+                  className="text-blue-600 font-medium"
+                >
+                  Explore Vaults
+                </button>
+                <button 
+                  onClick={() => setCurrentView('create')} 
+                  className="text-gray-600 hover:text-gray-900 transition-colors"
+                >
+                  Create Vault
+                </button>
+                <button 
+                  onClick={() => setCurrentView('student')} 
+                  className="text-gray-600 hover:text-gray-900 transition-colors"
+                >
+                  Student Portal
+                </button>
+              </div>
+              
+              <ConnectButton />
+            </div>
+          </div>
+        </nav>
+        
+        <div className="container mx-auto px-6 py-8">
+          <VaultDashboard />
+        </div>
+      </div>
+    )
+  }
+
+  if (currentView === 'create') {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        {/* Navigation */}
+        <nav className="bg-white shadow-sm">
+          <div className="container mx-auto px-6 py-4">
+            <div className="flex items-center justify-between">
+              <button 
+                onClick={() => setCurrentView('home')}
+                className="flex items-center space-x-2 hover:opacity-80 transition-opacity"
+              >
+                <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+                  <Heart className="w-5 h-5 text-white" />
+                </div>
+                <span className="text-2xl font-bold text-gray-900">MediMint</span>
+              </button>
+              
+              <div className="hidden md:flex items-center space-x-8">
+                <button 
+                  onClick={() => setCurrentView('vaults')} 
+                  className="text-gray-600 hover:text-gray-900 transition-colors"
+                >
+                  Explore Vaults
+                </button>
+                <button 
+                  onClick={() => setCurrentView('create')} 
+                  className="text-blue-600 font-medium"
+                >
+                  Create Vault
+                </button>
+                <button 
+                  onClick={() => setCurrentView('student')} 
+                  className="text-gray-600 hover:text-gray-900 transition-colors"
+                >
+                  Student Portal
+                </button>
+              </div>
+              
+              <ConnectButton />
+            </div>
+          </div>
+        </nav>
+        
+        <div className="container mx-auto px-6 py-8">
+          <VaultCreator />
+        </div>
+      </div>
+    )
+  }
+
+  if (currentView === 'student') {
+    return (
+      <div className="min-h-screen bg-gray-50">
+        {/* Navigation */}
+        <nav className="bg-white shadow-sm">
+          <div className="container mx-auto px-6 py-4">
+            <div className="flex items-center justify-between">
+              <button 
+                onClick={() => setCurrentView('home')}
+                className="flex items-center space-x-2 hover:opacity-80 transition-opacity"
+              >
+                <div className="w-8 h-8 bg-blue-600 rounded-lg flex items-center justify-center">
+                  <Heart className="w-5 h-5 text-white" />
+                </div>
+                <span className="text-2xl font-bold text-gray-900">MediMint</span>
+              </button>
+              
+              <div className="hidden md:flex items-center space-x-8">
+                <button 
+                  onClick={() => setCurrentView('vaults')} 
+                  className="text-gray-600 hover:text-gray-900 transition-colors"
+                >
+                  Explore Vaults
+                </button>
+                <button 
+                  onClick={() => setCurrentView('create')} 
+                  className="text-gray-600 hover:text-gray-900 transition-colors"
+                >
+                  Create Vault
+                </button>
+                <button 
+                  onClick={() => setCurrentView('student')} 
+                  className="text-blue-600 font-medium"
+                >
+                  Student Portal
+                </button>
+              </div>
+              
+              <ConnectButton />
+            </div>
+          </div>
+        </nav>
+        
+        <div className="container mx-auto px-6 py-8">
+          <StudentDashboard />
+        </div>
+      </div>
+    )
+  }
+
   return (
     <div className="min-h-screen">
       {/* Navigation */}
@@ -17,15 +174,24 @@ export default function HomePage() {
           </div>
           
           <div className="hidden md:flex items-center space-x-8">
-            <Link href="/vaults" className="text-gray-600 hover:text-gray-900 transition-colors">
+            <button 
+              onClick={() => setCurrentView('vaults')} 
+              className="text-gray-600 hover:text-gray-900 transition-colors"
+            >
               Explore Vaults
-            </Link>
-            <Link href="/investor" className="text-gray-600 hover:text-gray-900 transition-colors">
-              Investor Dashboard
-            </Link>
-            <Link href="/creator" className="text-gray-600 hover:text-gray-900 transition-colors">
+            </button>
+            <button 
+              onClick={() => setCurrentView('create')} 
+              className="text-gray-600 hover:text-gray-900 transition-colors"
+            >
+              Create Vault
+            </button>
+            <button 
+              onClick={() => setCurrentView('student')} 
+              className="text-gray-600 hover:text-gray-900 transition-colors"
+            >
               Student Portal
-            </Link>
+            </button>
           </div>
           
           <ConnectButton />
@@ -56,20 +222,20 @@ export default function HomePage() {
           </p>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <Link 
-              href="/vaults"
+            <button 
+              onClick={() => setCurrentView('vaults')}
               className="inline-flex items-center px-8 py-4 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 transition-colors shadow-lg hover:shadow-xl"
             >
               Explore Vaults
               <ArrowRight className="w-5 h-5 ml-2" />
-            </Link>
+            </button>
             
-            <Link 
-              href="/creator"
+            <button 
+              onClick={() => setCurrentView('create')}
               className="inline-flex items-center px-8 py-4 border-2 border-gray-300 text-gray-700 rounded-xl font-semibold hover:border-gray-400 transition-colors"
             >
               Apply for Funding
-            </Link>
+            </button>
           </div>
         </div>
       </section>
