@@ -1,9 +1,7 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.19;
 
-import "@chainlink/contracts/src/v0.8/automation/AutomationCompatible.sol";
-import "@chainlink/contracts/src/v0.8/functions/FunctionsClient.sol";
-import "@chainlink/contracts/src/v0.8/functions/FunctionsRequest.sol";
+import "@chainlink/contracts/src/v0.8/AutomationCompatible.sol";
 
 interface IEducationSBT {
     function addMilestone(uint256 tokenId, string memory description, uint256 scoreImpact, string memory verificationData) external;

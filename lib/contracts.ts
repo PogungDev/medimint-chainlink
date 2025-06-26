@@ -21,6 +21,8 @@ export const CONTRACT_ADDRESSES = {
     USDC: '0x5425890298aed601595a70AB815c96711a31Bc65', // Fuji USDC
   },
   arbitrumSepolia: {
+    VaultNFT: process.env.NEXT_PUBLIC_VAULT_NFT_ADDRESS || '0x0',
+    Repayment: process.env.NEXT_PUBLIC_REPAYMENT_ADDRESS || '0x0',
     RWAEducationNFT: process.env.NEXT_PUBLIC_RWA_EDUCATION_NFT_ADDRESS || '0x0',
     EducationSBT: process.env.NEXT_PUBLIC_EDUCATION_SBT_ADDRESS || '0x0',
     MilestoneVerifier: process.env.NEXT_PUBLIC_MILESTONE_VERIFIER_ADDRESS || '0x0',

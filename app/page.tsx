@@ -174,23 +174,20 @@ export default function HomePage() {
           </div>
           
           <div className="hidden md:flex items-center space-x-8">
+            <Link href="/mint" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">
+              🎓 Student: Mint Vault
+            </Link>
+            <Link href="/invest" className="text-gray-600 hover:text-green-600 transition-colors font-medium">
+              💰 Investor: Fund Vault
+            </Link>
+            <Link href="/dashboard" className="text-gray-600 hover:text-purple-600 transition-colors font-medium">
+              📊 Dashboard
+            </Link>
             <button 
               onClick={() => setCurrentView('vaults')} 
               className="text-gray-600 hover:text-gray-900 transition-colors"
             >
-              Explore Vaults
-            </button>
-            <button 
-              onClick={() => setCurrentView('create')} 
-              className="text-gray-600 hover:text-gray-900 transition-colors"
-            >
-              Create Vault
-            </button>
-            <button 
-              onClick={() => setCurrentView('student')} 
-              className="text-gray-600 hover:text-gray-900 transition-colors"
-            >
-              Student Portal
+              Legacy Portal
             </button>
           </div>
           
@@ -203,39 +200,75 @@ export default function HomePage() {
         <div className="text-center max-w-4xl mx-auto">
           <div className="inline-flex items-center px-4 py-2 bg-blue-100 rounded-full text-blue-800 text-sm font-medium mb-8">
             <Zap className="w-4 h-4 mr-2" />
-            Powered by Chainlink Oracles • 7/7 Modules Integrated
+            🏆 Chainlink Hackathon Demo • 5 Services Integrated • Ready for Judging
           </div>
           
           <h1 className="text-6xl md:text-7xl font-bold text-gray-900 mb-8 leading-tight">
-            Fund Medical
+            Revolutionary Medical
             <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600">
-              {" "}Education
+              {" "}Education RWA
             </span>
             <br />
-            Earn Fixed Returns
+            Powered by Chainlink
           </h1>
           
-          <p className="text-xl text-gray-600 mb-12 leading-relaxed max-w-3xl mx-auto">
-            Transform medical education funding with blockchain technology. 
-            Investors get <strong>10% fixed APY</strong> starting year 7, while students 
-            receive funding with <strong>Soulbound Token</strong> commitment tracking.
+          <p className="text-xl text-gray-600 mb-8 leading-relaxed max-w-3xl mx-auto">
+            Solve the <strong>$100B+ medical education crisis</strong> with tokenized funding vaults, 
+            featuring complete Chainlink integration: Data Feeds, VRF, Automation, Functions & CCIP.
           </p>
+
+          {/* Chainlink Services Showcase */}
+          <div className="grid grid-cols-5 gap-4 max-w-2xl mx-auto mb-8">
+            <div className="bg-blue-50 p-3 rounded-lg text-center">
+              <div className="text-2xl mb-1">📊</div>
+              <div className="text-xs font-medium text-blue-700">Data Feeds</div>
+              <div className="text-xs text-gray-600">Price Oracle</div>
+            </div>
+            <div className="bg-green-50 p-3 rounded-lg text-center">
+              <div className="text-2xl mb-1">🎲</div>
+              <div className="text-xs font-medium text-green-700">VRF</div>
+              <div className="text-xs text-gray-600">Fair Lottery</div>
+            </div>
+            <div className="bg-purple-50 p-3 rounded-lg text-center">
+              <div className="text-2xl mb-1">⏰</div>
+              <div className="text-xs font-medium text-purple-700">Automation</div>
+              <div className="text-xs text-gray-600">Auto Repay</div>
+            </div>
+            <div className="bg-orange-50 p-3 rounded-lg text-center">
+              <div className="text-2xl mb-1">⚡</div>
+              <div className="text-xs font-medium text-orange-700">Functions</div>
+              <div className="text-xs text-gray-600">API Calls</div>
+            </div>
+            <div className="bg-red-50 p-3 rounded-lg text-center">
+              <div className="text-2xl mb-1">🌐</div>
+              <div className="text-xs font-medium text-red-700">CCIP</div>
+              <div className="text-xs text-gray-600">Cross-Chain</div>
+            </div>
+          </div>
           
           <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-            <button 
-              onClick={() => setCurrentView('vaults')}
+            <Link 
+              href="/mint"
               className="inline-flex items-center px-8 py-4 bg-blue-600 text-white rounded-xl font-semibold hover:bg-blue-700 transition-colors shadow-lg hover:shadow-xl"
             >
-              Explore Vaults
+              🎓 Demo: Student Mint Vault
               <ArrowRight className="w-5 h-5 ml-2" />
-            </button>
+            </Link>
             
-            <button 
-              onClick={() => setCurrentView('create')}
-              className="inline-flex items-center px-8 py-4 border-2 border-gray-300 text-gray-700 rounded-xl font-semibold hover:border-gray-400 transition-colors"
+            <Link 
+              href="/invest"
+              className="inline-flex items-center px-8 py-4 bg-green-600 text-white rounded-xl font-semibold hover:bg-green-700 transition-colors shadow-lg hover:shadow-xl"
             >
-              Apply for Funding
-            </button>
+              💰 Demo: Investor Flow
+              <ArrowRight className="w-5 h-5 ml-2" />
+            </Link>
+            
+            <Link 
+              href="/dashboard"
+              className="inline-flex items-center px-8 py-4 border-2 border-purple-600 text-purple-600 rounded-xl font-semibold hover:bg-purple-50 transition-colors"
+            >
+              📊 Live Dashboard
+            </Link>
           </div>
         </div>
       </section>

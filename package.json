@@ -12,8 +12,13 @@
     "compile": "hardhat compile",
     "test": "hardhat test",
     "node": "hardhat node",
-    "deploy": "hardhat run scripts/deploy.js",
-    "deploy:testnet": "hardhat run scripts/deploy.js --network polygonMumbai",
+    "deploy": "hardhat run scripts/deploy-arbitrum-sepolia.js --network arbitrumSepolia",
+    "deploy:testnet": "hardhat run scripts/deploy-arbitrum-sepolia.js --network arbitrumSepolia",
+    "deploy:all": "npm run compile && npm run deploy",
+    "functions:simulate": "hardhat functions-simulate",
+    "verify": "hardhat verify --network arbitrumSepolia",
+    "setup:arbitrum": "echo 'Setting up Arbitrum Sepolia...' && npm run compile && npm run deploy",
+    "demo:flow": "node scripts/demo-flow.js",
     "install-deps": "npm install"
   },
   "keywords": [

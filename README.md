@@ -1,40 +1,55 @@
-# 🧬 MediMint - Complete Web3 Medical Education Funding Platform
+# 🏥 MediMint - A-Z Chainlink Demo on Arbitrum Sepolia
 
 <div align="center">
-  <img src="./public/logo.png" alt="MediMint Logo" width="120" height="120">
   
-  **✅ PRODUCTION READY - Complete smart contract integration with frontend**
+  **🎯 READY FOR JUDGING - Complete A-Z Chainlink Integration**
   
-  [![Built with Chainlink](https://img.shields.io/badge/Built%20with-Chainlink-375BD2)](https://chain.link/)
-  [![Deployed on Polygon](https://img.shields.io/badge/Deployed%20on-Polygon-8247E5)](https://polygon.technology/)
-  [![Next.js](https://img.shields.io/badge/Frontend-Next.js-black)](https://nextjs.org/)
-  [![Hardhat](https://img.shields.io/badge/Smart%20Contracts-Hardhat-yellow)](https://hardhat.org/)
-  [![Status](https://img.shields.io/badge/Status-Complete%20Integration-green)](http://localhost:8947)
+  [![Arbitrum Sepolia](https://img.shields.io/badge/Live%20on-Arbitrum%20Sepolia-blue)](https://sepolia.arbiscan.io)
+  [![Chainlink Functions](https://img.shields.io/badge/Chainlink-Functions%20%2B%20Automation-orange)](https://chain.link/)
+  [![Demo Ready](https://img.shields.io/badge/Demo-A--Z%20Complete-success)](http://localhost:8947)
+  [![Verifiable](https://img.shields.io/badge/100%25-Verifiable%20on%20Arbiscan-green)](https://sepolia.arbiscan.io)
 </div>
 
-## 🎊 **COMPLETE INTEGRATION ACHIEVED!**
+## 🏆 **COMPLETE A-Z DEMO READY!**
 
-**🚀 One-Command Launch**: `git clone && cd medimint && ./run-medimint.sh`  
-**🌐 Live Demo**: [http://localhost:8947](http://localhost:8947) (after setup)  
-**📱 All Features**: Vault creation, investment, SBT tracking, milestone verification  
-**🔗 Full Web3**: Complete wallet integration with all smart contracts</div>
+**🚀 Quick Start**: `chmod +x scripts/setup-a2z.sh && ./scripts/setup-a2z.sh`  
+**🌐 Demo URL**: [http://localhost:8947](http://localhost:8947)  
+**📊 Live Explorer**: [https://sepolia.arbiscan.io](https://sepolia.arbiscan.io)  
+**🔗 All Features**: Real Chainlink Functions + Automation + USDC + Arbiscan verification</div>
 
-## 🌟 Overview
+## 🎯 A-Z Demo Overview
 
-MediMint is the first blockchain platform designed specifically for medical education funding. We turn long-term education into fixed-yield vaults where investors fund medical students and receive guaranteed returns while students get funding with transparent commitment tracking.
+**The first fully working RWA demo with LIVE Chainlink integration on Arbitrum Sepolia**
 
-### 🎯 Problem We Solve
+### ✅ What You Can Test RIGHT NOW:
 
-- **Funding Gap**: Medical education costs $20K-$100K with no returns for 4-6 years
-- **Lack of Transparency**: Traditional funding lacks progress tracking and commitment verification
-- **Limited Global Access**: Investors can't easily participate in education funding worldwide
+1. **🎓 Student Flow**: Mint vault → Chainlink Functions fetch salary → View on Arbiscan
+2. **💰 Investor Flow**: Fund vault with USDC → Activate automation → Watch auto-repayments  
+3. **🔗 Chainlink Proof**: Live Functions + Automation every 5 minutes
+4. **📊 Verifiable**: Every transaction visible on sepolia.arbiscan.io
 
-### 💡 Our Solution
+### 🏆 Demo Highlights for Judges
 
-- **Fixed-Yield Vaults**: 10% APY guaranteed returns starting year 7
-- **Soulbound Commitment**: Non-transferable tokens ensuring student accountability
-- **Global Accessibility**: Cross-chain payouts via Chainlink CCIP
-- **Automated Verification**: Milestone tracking using Chainlink oracles
+- ✅ **Real Arbitrum Sepolia deployment** (not localhost)
+- ✅ **Live Chainlink Functions** (fetches salary projections from API)  
+- ✅ **Live Chainlink Automation** (triggers repayments every 5 minutes)
+- ✅ **Real USDC token transactions** (with faucet for testing)
+- ✅ **Fully verifiable on Arbiscan** (all TXs publicly viewable)
+
+### 🚀 Quick Demo Steps
+
+```bash
+# 1. Setup everything (contracts + frontend)
+./scripts/setup-a2z.sh
+
+# 2. Open demo in browser
+open http://localhost:8947
+
+# 3. Demo flow:
+# Student: Go to /mint → Create vault → See Chainlink Functions work
+# Investor: Go to /invest → Fund vault → Activate automation  
+# View: Go to /dashboard → Inspect all data + Arbiscan links
+```
 
 ## 🏗️ Architecture
 
