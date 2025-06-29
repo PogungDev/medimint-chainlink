@@ -1,6 +1,6 @@
 'use client'
 
-import { useContractRead, useContractWrite, usePrepareContractWrite, useAccount, useNetwork } from 'wagmi'
+import { useContractRead, useContractWrite, useAccount, useNetwork } from 'wagmi'
 import { 
   RWA_EDUCATION_NFT_ABI, 
   EDUCATION_SBT_ABI, 
@@ -46,15 +46,10 @@ export function useRWAEducationNFT() {
   }
 
   // Create vault
-  const { config: createVaultConfig } = usePrepareContractWrite({
+  const { write: createVault, isLoading: isCreatingVault } = useContractWrite({
     address: contractAddress as `0x${string}`,
     abi: RWA_EDUCATION_NFT_ABI,
     functionName: 'createVault',
-    enabled: contractAddress !== '0x0',
-  })
-
-  const { write: createVault, isLoading: isCreatingVault } = useContractWrite({
-    ...createVaultConfig,
     onSuccess: (data) => {
       toast({
         title: "Vault Created Successfully! 🎉",
@@ -70,15 +65,10 @@ export function useRWAEducationNFT() {
   })
 
   // Deposit to vault
-  const { config: depositConfig } = usePrepareContractWrite({
+  const { write: depositToVault, isLoading: isDepositing } = useContractWrite({
     address: contractAddress as `0x${string}`,
     abi: RWA_EDUCATION_NFT_ABI,
     functionName: 'depositToVault',
-    enabled: contractAddress !== '0x0',
-  })
-
-  const { write: depositToVault, isLoading: isDepositing } = useContractWrite({
-    ...depositConfig,
     onSuccess: (data) => {
       toast({
         title: "Deposit Successful! 💰",
@@ -94,15 +84,10 @@ export function useRWAEducationNFT() {
   })
 
   // Claim platform reward
-  const { config: claimRewardConfig } = usePrepareContractWrite({
+  const { write: claimPlatformReward, isLoading: isClaimingReward } = useContractWrite({
     address: contractAddress as `0x${string}`,
     abi: RWA_EDUCATION_NFT_ABI,
     functionName: 'claimPlatformReward',
-    enabled: contractAddress !== '0x0',
-  })
-
-  const { write: claimPlatformReward, isLoading: isClaimingReward } = useContractWrite({
-    ...claimRewardConfig,
     onSuccess: (data) => {
       toast({
         title: "Reward Claimed! 🎁",
@@ -118,15 +103,10 @@ export function useRWAEducationNFT() {
   })
 
   // Claim fixed return
-  const { config: claimReturnConfig } = usePrepareContractWrite({
+  const { write: claimFixedReturn, isLoading: isClaimingReturn } = useContractWrite({
     address: contractAddress as `0x${string}`,
     abi: RWA_EDUCATION_NFT_ABI,
     functionName: 'claimFixedReturn',
-    enabled: contractAddress !== '0x0',
-  })
-
-  const { write: claimFixedReturn, isLoading: isClaimingReturn } = useContractWrite({
-    ...claimReturnConfig,
     onSuccess: (data) => {
       toast({
         title: "Fixed Return Claimed! 💵",
@@ -198,15 +178,10 @@ export function useEducationSBT() {
   }
 
   // Mint SBT
-  const { config: mintSBTConfig } = usePrepareContractWrite({
+  const { write: mintSBT, isLoading: isMintingSBT } = useContractWrite({
     address: contractAddress as `0x${string}`,
     abi: EDUCATION_SBT_ABI,
     functionName: 'mintSBT',
-    enabled: contractAddress !== '0x0',
-  })
-
-  const { write: mintSBT, isLoading: isMintingSBT } = useContractWrite({
-    ...mintSBTConfig,
     onSuccess: (data) => {
       toast({
         title: "SBT Minted Successfully! 🏆",
@@ -239,15 +214,10 @@ export function useMilestoneVerifier() {
   const contractAddress = getContractAddress(chain?.id || 80001, 'MilestoneVerifier')
 
   // Submit milestone
-  const { config: submitMilestoneConfig } = usePrepareContractWrite({
+  const { write: submitMilestone, isLoading: isSubmittingMilestone } = useContractWrite({
     address: contractAddress as `0x${string}`,
     abi: MILESTONE_VERIFIER_ABI,
     functionName: 'submitMilestone',
-    enabled: contractAddress !== '0x0',
-  })
-
-  const { write: submitMilestone, isLoading: isSubmittingMilestone } = useContractWrite({
-    ...submitMilestoneConfig,
     onSuccess: (data) => {
       toast({
         title: "Milestone Submitted! 📚",
@@ -300,15 +270,10 @@ export function useUSDC() {
   }
 
   // Approve USDC spending
-  const { config: approveConfig } = usePrepareContractWrite({
+  const { write: approveUSDC, isLoading: isApprovingUSDC } = useContractWrite({
     address: contractAddress as `0x${string}`,
     abi: USDC_ABI,
     functionName: 'approve',
-    enabled: contractAddress !== '0x0',
-  })
-
-  const { write: approveUSDC, isLoading: isApprovingUSDC } = useContractWrite({
-    ...approveConfig,
     onSuccess: (data) => {
       toast({
         title: "USDC Approved! ✅",

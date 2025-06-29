@@ -312,22 +312,31 @@ export const USDC_ABI = [
   }
 ] as const
 
+// Union type of all possible contract names
+type ContractName = 
+  | 'RWAEducationNFT'
+  | 'EducationSBT'
+  | 'MilestoneVerifier'
+  | 'USDC'
+  | 'VaultNFT'
+  | 'Repayment'
+
 // Helper function to get contract address based on chain
 export function getContractAddress(
   chainId: number,
-  contractName: keyof (typeof CONTRACT_ADDRESSES)[keyof typeof CONTRACT_ADDRESSES]
+  contractName: ContractName
 ): string {
   switch (chainId) {
     case 80001: // Polygon Mumbai
-      return CONTRACT_ADDRESSES.polygonMumbai[contractName]
+      return (CONTRACT_ADDRESSES.polygonMumbai as any)[contractName] || '0x0'
     case 11155111: // Sepolia
-      return CONTRACT_ADDRESSES.sepolia[contractName]
+      return (CONTRACT_ADDRESSES.sepolia as any)[contractName] || '0x0'
     case 43113: // Avalanche Fuji
-      return CONTRACT_ADDRESSES.avalancheFuji[contractName]
+      return (CONTRACT_ADDRESSES.avalancheFuji as any)[contractName] || '0x0'
     case 421614: // Arbitrum Sepolia
-      return CONTRACT_ADDRESSES.arbitrumSepolia[contractName]
+      return (CONTRACT_ADDRESSES.arbitrumSepolia as any)[contractName] || '0x0'
     default:
-      return CONTRACT_ADDRESSES.polygonMumbai[contractName]
+      return (CONTRACT_ADDRESSES.polygonMumbai as any)[contractName] || '0x0'
   }
 }
 

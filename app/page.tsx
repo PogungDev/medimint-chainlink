@@ -173,7 +173,7 @@ export default function HomePage() {
             <span className="text-2xl font-bold text-gray-900">MediMint</span>
           </div>
           
-          <div className="hidden md:flex items-center space-x-8">
+          <div className="hidden md:flex items-center space-x-6">
             <Link href="/mint" className="text-gray-600 hover:text-blue-600 transition-colors font-medium">
               🎓 Student: Mint Vault
             </Link>
@@ -182,6 +182,9 @@ export default function HomePage() {
             </Link>
             <Link href="/dashboard" className="text-gray-600 hover:text-purple-600 transition-colors font-medium">
               📊 Dashboard
+            </Link>
+            <Link href="/chainlink" className="text-gray-600 hover:text-orange-600 transition-colors font-medium">
+              🔗 Chainlink Services
             </Link>
             <button 
               onClick={() => setCurrentView('vaults')} 

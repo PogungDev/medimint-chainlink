@@ -6,6 +6,7 @@ import { polygonMumbai, sepolia, avalancheFuji, arbitrumSepolia } from 'wagmi/ch
 import { publicProvider } from 'wagmi/providers/public'
 import { infuraProvider } from 'wagmi/providers/infura'
 import { RainbowKitProvider, getDefaultWallets, connectorsForWallets } from '@rainbow-me/rainbowkit'
+import { rabbyWallet } from '@rainbow-me/rainbowkit/wallets'
 import '@rainbow-me/rainbowkit/styles.css'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 
@@ -27,6 +28,12 @@ const { wallets } = getDefaultWallets({
 
 const connectors = connectorsForWallets([
   ...wallets,
+  {
+    groupName: 'Popular',
+    wallets: [
+      rabbyWallet({ chains }),
+    ],
+  },
 ])
 
 // Create wagmi config

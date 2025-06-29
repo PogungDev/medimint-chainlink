@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useVault, useRepayment, demoUtils } from '@/lib/useVault';
 import { useAccount, useNetwork } from 'wagmi';
 import Link from 'next/link';
+import { ChainlinkDashboard } from '@/components/chainlink/ChainlinkDashboard';
 
 export default function DashboardPage() {
   const { address, isConnected } = useAccount();
@@ -156,44 +157,9 @@ export default function DashboardPage() {
           )}
         </div>
 
-        {/* Chainlink Services Status */}
-        <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
-          <h2 className="text-xl font-bold mb-4">🔗 Chainlink Services Status</h2>
-          <div className="grid md:grid-cols-2 gap-6">
-            <div className="p-4 border rounded-lg">
-              <h3 className="font-bold text-blue-600 mb-2">⚡ Chainlink Functions</h3>
-              <ul className="space-y-1 text-sm">
-                <li>✅ Router: 0x234a...5C5C</li>
-                <li>✅ DON ID: fun-arbitrum-sepolia-1</li>
-                <li>🔗 Fetches salary projections from API</li>
-                <li>📊 Stores data on-chain automatically</li>
-              </ul>
-              <a 
-                href="https://functions.chain.link" 
-                target="_blank" 
-                className="text-blue-600 underline text-sm"
-              >
-                Manage subscriptions →
-              </a>
-            </div>
-            
-            <div className="p-4 border rounded-lg">
-              <h3 className="font-bold text-green-600 mb-2">⏰ Chainlink Automation</h3>
-              <ul className="space-y-1 text-sm">
-                <li>✅ Registry: 0xE16D...8b2</li>
-                <li>🔄 Triggers every 5 minutes (demo)</li>
-                <li>💳 Processes repayments automatically</li>
-                <li>📈 Active schedules: {activeSchedules?.length || 0}</li>
-              </ul>
-              <a 
-                href="https://automation.chain.link" 
-                target="_blank" 
-                className="text-green-600 underline text-sm"
-              >
-                Manage upkeeps →
-              </a>
-            </div>
-          </div>
+        {/* Comprehensive Chainlink Dashboard */}
+        <div className="mb-6">
+          <ChainlinkDashboard />
         </div>
 
         {/* Demo Proof Section */}

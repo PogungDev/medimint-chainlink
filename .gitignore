@@ -94,3 +94,7 @@ logs
 # Temporary folders
 tmp/
 temp/ 
+
+*.key
+*.pem
+secrets/

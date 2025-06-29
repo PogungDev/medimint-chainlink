@@ -1,8 +1,9 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useVault, useUSDC, useRepayment, demoUtils } from '@/lib/useVault';
 import { useAccount } from 'wagmi';
+import { useChainlinkDataFeeds } from '@/hooks/useChainlinkDataFeeds';
 
 export default function InvestPage() {
   const { address, isConnected } = useAccount();
@@ -10,13 +11,41 @@ export default function InvestPage() {
   const { approveUSDC, isApproving, approveTxHash, usdcBalance } = useUSDC();
   const { createRepaymentSchedule, isCreatingSchedule, createScheduleTxHash } = useRepayment();
   
+  // Chainlink Data Feeds integration
+  const {
+    currentMultiplier,
+    calculateAdjustedInvestment,
+    getMultiplierStatus,
+    getPriceStatus,
+    formatPrice,
+    latestPrice,
+    updateMultipliers,
+    isContractDeployed: isDataFeedsDeployed,
+  } = useChainlinkDataFeeds();
+  
   const [investmentAmount, setInvestmentAmount] = useState('30000');
+  const [adjustedAmount, setAdjustedAmount] = useState<string>('30000');
   const [step, setStep] = useState(1); // 1: Find Vault, 2: Approve USDC, 3: Invest, 4: Create Schedule
+
+  // Calculate adjusted investment amount based on Chainlink Data Feeds
+  useEffect(() => {
+    if (currentMultiplier && investmentAmount) {
+      const baseAmount = parseFloat(investmentAmount);
+      const multiplier = Number(currentMultiplier);
+      const adjusted = (baseAmount * multiplier) / 100;
+      setAdjustedAmount(adjusted.toFixed(2));
+    }
+  }, [investmentAmount, currentMultiplier]);
+
+  const multiplierStatus = getMultiplierStatus();
+  const priceStatus = getPriceStatus();
 
   const handleApprove = async () => {
     if (!vaultData) return;
     
-    const amount = BigInt(parseInt(investmentAmount) * 1000000); // USDC 6 decimals
+    // Use adjusted amount if Data Feeds is available, otherwise use base amount
+    const finalAmount = isDataFeedsDeployed && adjustedAmount ? adjustedAmount : investmentAmount;
+    const amount = BigInt(parseFloat(finalAmount) * 1000000); // USDC 6 decimals
     approveUSDC?.({
       args: [vaultData?.student, amount] // Approve vault contract
     });
@@ -25,7 +54,9 @@ export default function InvestPage() {
   const handleInvest = async () => {
     if (!vaultId) return;
     
-    const amount = BigInt(parseInt(investmentAmount) * 1000000);
+    // Use adjusted amount if Data Feeds is available, otherwise use base amount
+    const finalAmount = isDataFeedsDeployed && adjustedAmount ? adjustedAmount : investmentAmount;
+    const amount = BigInt(parseFloat(finalAmount) * 1000000);
     investInVault?.({
       args: [BigInt(vaultId), amount]
     });
@@ -60,6 +91,91 @@ export default function InvestPage() {
     <div className="container mx-auto px-4 py-8">
       <div className="max-w-4xl mx-auto">
         <h1 className="text-3xl font-bold mb-8">💰 Invest in Education Vault</h1>
+        
+        {/* Chainlink Data Feeds Status */}
+        {isDataFeedsDeployed && (
+          <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-xl font-bold flex items-center">
+                📊 Live Investment Multiplier
+                <span className="ml-2 text-sm bg-green-100 text-green-600 px-2 py-1 rounded">
+                  Chainlink Data Feeds
+                </span>
+              </h2>
+              <button
+                onClick={() => updateMultipliers?.()}
+                className="bg-blue-600 text-white px-3 py-1 text-sm rounded hover:bg-blue-700"
+              >
+                Update
+              </button>
+            </div>
+            
+            <div className="grid md:grid-cols-3 gap-4">
+              <div className="bg-gray-50 p-4 rounded-lg">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-gray-600">ETH/USD Price</span>
+                  <span className="text-lg">{priceStatus.emoji}</span>
+                </div>
+                <div className="text-lg font-bold">
+                  ${latestPrice ? formatPrice(latestPrice, 8) : 'Loading...'}
+                </div>
+                <div className="text-sm text-gray-600">{priceStatus.text}</div>
+              </div>
+              
+              <div className={`p-4 rounded-lg ${
+                multiplierStatus.color === 'green' ? 'bg-green-50' :
+                multiplierStatus.color === 'red' ? 'bg-red-50' : 'bg-blue-50'
+              }`}>
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-gray-600">Current Multiplier</span>
+                  <span className={`text-sm px-2 py-1 rounded ${
+                    multiplierStatus.color === 'green' ? 'bg-green-200 text-green-800' :
+                    multiplierStatus.color === 'red' ? 'bg-red-200 text-red-800' : 'bg-blue-200 text-blue-800'
+                  }`}>
+                    {multiplierStatus.status}
+                  </span>
+                </div>
+                <div className={`text-lg font-bold ${
+                  multiplierStatus.color === 'green' ? 'text-green-900' :
+                  multiplierStatus.color === 'red' ? 'text-red-900' : 'text-blue-900'
+                }`}>
+                  {multiplierStatus.text}
+                </div>
+                <div className="text-sm text-gray-600">
+                  {multiplierStatus.status === 'premium' && '🎉 Bonus returns!'}
+                  {multiplierStatus.status === 'discount' && '💡 Discounted opportunity!'}
+                  {multiplierStatus.status === 'stable' && '⚖️ Standard terms'}
+                </div>
+              </div>
+              
+              <div className="bg-purple-50 p-4 rounded-lg">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="text-gray-600">Adjusted Investment</span>
+                  <span className="text-lg">💰</span>
+                </div>
+                <div className="text-lg font-bold text-purple-900">
+                  ${adjustedAmount} USDC
+                </div>
+                <div className="text-sm text-gray-600">
+                  Base: ${investmentAmount} USDC
+                </div>
+              </div>
+            </div>
+            
+            {/* Real-time indicator */}
+            <div className="mt-4 p-3 bg-blue-50 rounded-lg">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center">
+                  <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse mr-2"></div>
+                  <span className="text-sm font-medium text-blue-900">
+                    Investment amount automatically adjusts based on market conditions
+                  </span>
+                </div>
+                <span className="text-xs text-blue-600">Updates every 10 seconds</span>
+              </div>
+            </div>
+          </div>
+        )}
         
         {/* Step 1: Find Vault */}
         <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
@@ -108,7 +224,7 @@ export default function InvestPage() {
             <h2 className="text-xl font-bold mb-4">📝 Step 2: Approve USDC</h2>
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium mb-2">Investment Amount (USDC)</label>
+                <label className="block text-sm font-medium mb-2">Base Investment Amount (USDC)</label>
                 <input
                   type="number"
                   value={investmentAmount}
@@ -117,13 +233,57 @@ export default function InvestPage() {
                   placeholder="30000"
                 />
               </div>
+
+              {/* Investment Calculation Display */}
+              {isDataFeedsDeployed && currentMultiplier && (
+                <div className="bg-gradient-to-r from-blue-50 to-purple-50 p-4 rounded-lg">
+                  <h4 className="font-medium mb-3">💰 Investment Calculation (Chainlink Adjusted)</h4>
+                  <div className="space-y-2">
+                    <div className="flex justify-between text-sm">
+                      <span>Base Amount:</span>
+                      <span>${investmentAmount} USDC</span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span>Chainlink Multiplier:</span>
+                      <span className={`font-medium ${
+                        multiplierStatus.color === 'green' ? 'text-green-600' :
+                        multiplierStatus.color === 'red' ? 'text-red-600' : 'text-blue-600'
+                      }`}>
+                        {Number(currentMultiplier)}%
+                      </span>
+                    </div>
+                    <div className="border-t pt-2">
+                      <div className="flex justify-between font-medium">
+                        <span>Final Investment Amount:</span>
+                        <span className={`${
+                          multiplierStatus.color === 'green' ? 'text-green-600' :
+                          multiplierStatus.color === 'red' ? 'text-red-600' : 'text-blue-600'
+                        }`}>
+                          ${adjustedAmount} USDC
+                        </span>
+                      </div>
+                    </div>
+                    {Number(currentMultiplier) !== 100 && (
+                      <div className={`text-xs ${
+                        Number(currentMultiplier) > 100 ? 'text-green-600' : 'text-red-600'
+                      }`}>
+                        {Number(currentMultiplier) > 100 ? '🎉 Bonus: ' : '💡 Discount: '}
+                        {Number(currentMultiplier) > 100 ? '+' : ''}
+                        ${(parseFloat(adjustedAmount) - parseFloat(investmentAmount)).toFixed(2)} USDC
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
               
               <button
                 onClick={handleApprove}
                 disabled={isApproving}
                 className="w-full bg-yellow-600 text-white py-3 px-6 rounded-lg hover:bg-yellow-700 disabled:opacity-50"
               >
-                {isApproving ? '⏳ Approving USDC...' : '📝 Approve USDC Spending'}
+                {isApproving ? '⏳ Approving USDC...' : 
+                  `📝 Approve ${isDataFeedsDeployed ? adjustedAmount : investmentAmount} USDC Spending`
+                }
               </button>
 
               {approveTxHash && (
@@ -134,6 +294,11 @@ export default function InvestPage() {
                       View on Arbiscan
                     </a>
                   </p>
+                  {isDataFeedsDeployed && (
+                    <p className="text-yellow-600 mt-1 text-sm">
+                      📊 Amount adjusted using Chainlink Data Feeds for optimal investment timing
+                    </p>
+                  )}
                 </div>
               )}
             </div>
@@ -144,12 +309,28 @@ export default function InvestPage() {
         {vaultData && approveTxHash && (
           <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
             <h2 className="text-xl font-bold mb-4">💸 Step 3: Invest in Vault</h2>
+            
+            {/* Final investment summary */}
+            {isDataFeedsDeployed && currentMultiplier && (
+              <div className="bg-green-50 p-4 rounded-lg mb-4">
+                <div className="flex justify-between items-center">
+                  <span className="font-medium">Final Investment Amount:</span>
+                  <span className="text-lg font-bold text-green-600">${adjustedAmount} USDC</span>
+                </div>
+                <div className="text-sm text-green-700 mt-1">
+                  📊 Amount optimized using Chainlink Data Feeds
+                </div>
+              </div>
+            )}
+            
             <button
               onClick={handleInvest}
               disabled={isInvesting}
               className="w-full bg-green-600 text-white py-3 px-6 rounded-lg hover:bg-green-700 disabled:opacity-50"
             >
-              {isInvesting ? '⏳ Investing...' : `💰 Invest $${investmentAmount} USDC`}
+              {isInvesting ? '⏳ Investing...' : 
+                `💰 Invest $${isDataFeedsDeployed && adjustedAmount ? adjustedAmount : investmentAmount} USDC`
+              }
             </button>
 
             {investTxHash && (
@@ -160,6 +341,11 @@ export default function InvestPage() {
                     View on Arbiscan
                   </a>
                 </p>
+                {isDataFeedsDeployed && (
+                  <p className="text-green-600 mt-2 text-sm">
+                    🔗 Investment amount was automatically optimized using Chainlink Data Feeds based on current market conditions
+                  </p>
+                )}
               </div>
             )}
           </div>
